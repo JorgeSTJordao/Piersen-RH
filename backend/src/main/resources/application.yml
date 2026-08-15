@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: piersen-hr
+  datasource:
+    url: ${PIERSEN_DB_URL:jdbc:mysql://localhost:3306/piersen_hr?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo}
+    username: ${PIERSEN_DB_USER:piersen}
+    password: ${PIERSEN_DB_PASSWORD:piersen}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${PIERSEN_PORT:8080}
+
+piersen:
+  jwt:
+    secret: ${PIERSEN_JWT_SECRET:piersen-hr-secret-key-para-desenvolvimento-local-2026}
+    expiration-minutes: ${PIERSEN_JWT_EXPIRATION:480}
+  seed:
+    enabled: ${PIERSEN_SEED_ENABLED:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    br.com.academicbit.piersen: INFO

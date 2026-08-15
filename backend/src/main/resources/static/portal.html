@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piersen HR - Portal do Funcionario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="layout">
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <h1 class="brand">Piersen<span> HR</span></h1>
+            <p class="module">Portal do Funcionario</p>
+        </div>
+
+        <div class="sidebar-nav">
+            <button class="active" data-panel="ponto" onclick="showPanel('ponto')">Marcacao de ponto</button>
+            <button data-panel="ferias" onclick="showPanel('ferias')">Solicitar ferias</button>
+            <button data-panel="atestados" onclick="showPanel('atestados')">Enviar atestado</button>
+            <button data-panel="holerites" onclick="showPanel('holerites')">Meus holerites</button>
+            <button data-panel="dados" onclick="showPanel('dados')">Meus dados</button>
+            <button data-panel="avisos" onclick="showPanel('avisos')">Avisos</button>
+        </div>
+
+        <div class="sidebar-footer">
+            <span id="user-name"></span>
+            <button class="logout" onclick="logout()">Sair</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="stat-row">
+            <div class="stat"><div class="value" id="stat-horas">0h00</div><div class="label">Horas de hoje</div></div>
+            <div class="stat"><div class="value" id="stat-saldo">0</div><div class="label">Saldo de ferias (dias)</div></div>
+            <div class="stat"><div class="value" id="stat-cargo">-</div><div class="label">Cargo atual</div></div>
+            <div class="stat"><div class="value" id="stat-avisos">0</div><div class="label">Avisos nao lidos</div></div>
+        </div>
+
+        <section id="panel-ponto" class="panel active">
+            <div class="card">
+                <h2>Registro de ponto</h2>
+                <p class="hint">O sistema valida a sequencia das marcacoes e envia o espelho para conferencia do RH.</p>
+                <div class="actions">
+                    <button class="primary" onclick="punch('ENTRADA')">Entrada</button>
+                    <button class="ghost" onclick="punch('INICIO_INTERVALO')">Inicio do intervalo</button>
+                    <button class="ghost" onclick="punch('FIM_INTERVALO')">Fim do intervalo</button>
+                    <button class="danger" onclick="punch('SAIDA')">Saida</button>
+                </div>
+                <div id="punch-feedback" class="feedback"></div>
+                <div id="timesheet-table" style="margin-top:18px"></div>
+            </div>
+        </section>
+
+        <section id="panel-ferias" class="panel">
+            <div class="card">
+                <h2>Solicitacao de ferias</h2>
+                <p class="hint">Minimo de 5 dias, com pelo menos 15 dias de antecedencia. A solicitacao entra na fila do RH.</p>
+                <form id="vacation-form">
+                    <div class="grid">
+                        <div><label for="vc-start">Inicio</label><input id="vc-start" type="date" required></div>
+                        <div><label for="vc-end">Fim</label><input id="vc-end" type="date" required></div>
+                    </div>
+                    <div class="actions"><button type="submit" class="primary">Solicitar</button></div>
+                </form>
+                <div id="vacation-feedback" class="feedback"></div>
+                <div id="vacations-table" style="margin-top:18px"></div>
+            </div>
+        </section>
+
+        <section id="panel-atestados" class="panel">
+            <div class="card">
+                <h2>Envio de atestado</h2>
+                <p class="hint">Informe o link do documento digitalizado. O RH analisa e abona as horas no espelho de ponto.</p>
+                <form id="certificate-form">
+                    <div class="grid">
+                        <div><label for="ce-date">Data da ausencia</label><input id="ce-date" type="date" required></div>
+                        <div><label for="ce-days">Dias de afastamento</label><input id="ce-days" type="number" min="1" value="1" required></div>
+                        <div><label for="ce-url">Link do documento</label><input id="ce-url" type="url" required></div>
+                    </div>
+                    <div class="actions"><button type="submit" class="primary">Enviar atestado</button></div>
+                </form>
+                <div id="certificate-feedback" class="feedback"></div>
+                <div id="certificates-table" style="margin-top:18px"></div>
+            </div>
+        </section>
+
+        <section id="panel-holerites" class="panel">
+            <div class="card">
+                <h2>Meus holerites</h2>
+                <p class="hint">Consulta dos contra-cheques emitidos pelo RH.</p>
+                <div id="payslips-table"></div>
+            </div>
+        </section>
+
+        <section id="panel-dados" class="panel">
+            <div class="card">
+                <h2>Meus dados pessoais</h2>
+                <p class="hint">Voce pode atualizar telefone, endereco e foto. Cargo, salario e departamento sao alterados apenas pelo RH.</p>
+                <form id="personal-form">
+                    <div class="grid">
+                        <div><label for="pd-phone">Telefone</label><input id="pd-phone"></div>
+                        <div><label for="pd-address">Endereco</label><input id="pd-address"></div>
+                        <div><label for="pd-photo">URL da foto</label><input id="pd-photo" type="url"></div>
+                    </div>
+                    <div class="grid" style="margin-top:14px">
+                        <div><label>Cargo</label><input id="pd-position" disabled></div>
+                        <div><label>Departamento</label><input id="pd-department" disabled></div>
+                        <div><label>Salario</label><input id="pd-salary" disabled></div>
+                    </div>
+                    <div class="actions"><button type="submit" class="primary">Salvar alteracoes</button></div>
+                </form>
+                <div id="personal-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <section id="panel-avisos" class="panel">
+            <div class="card">
+                <h2>Avisos do RH</h2>
+                <p class="hint">Notificacoes de aprovacao, recusa e mudancas contratuais.</p>
+                <div id="notifications-list"></div>
+                <div class="actions"><button class="ghost" onclick="markNotificationsRead()">Marcar todos como lidos</button></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/portal.js"></script>
+</body>
+</html>

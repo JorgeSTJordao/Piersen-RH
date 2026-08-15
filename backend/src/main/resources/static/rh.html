@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piersen HR - Modulo do RH</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="layout">
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <h1 class="brand">Piersen<span> HR</span></h1>
+            <p class="module">Modulo do RH</p>
+        </div>
+
+        <div class="sidebar-nav">
+            <button class="active" data-panel="quadro" onclick="showPanel('quadro')">Quadro de funcionarios</button>
+            <button data-panel="admissao" onclick="showPanel('admissao')">Admissao</button>
+            <button data-panel="contrato" onclick="showPanel('contrato')">Cargo e salario</button>
+            <button data-panel="ponto" onclick="showPanel('ponto')">Conferencia de ponto</button>
+            <button data-panel="ferias" onclick="showPanel('ferias')">Aprovacao de ferias</button>
+            <button data-panel="atestados" onclick="showPanel('atestados')">Atestados</button>
+            <button data-panel="holerites" onclick="showPanel('holerites')">Holerites</button>
+        </div>
+
+        <div class="sidebar-footer">
+            <span id="user-name"></span>
+            <button class="logout" onclick="logout()">Sair</button>
+        </div>
+    </nav>
+
+    <main>
+        <section id="panel-quadro" class="panel active">
+            <div class="stat-row">
+                <div class="stat"><div class="value" id="stat-total">0</div><div class="label">Total no historico</div></div>
+                <div class="stat"><div class="value" id="stat-ativos">0</div><div class="label">Ativos</div></div>
+                <div class="stat"><div class="value" id="stat-desligados">0</div><div class="label">Desligados</div></div>
+                <div class="stat"><div class="value" id="stat-pendencias">0</div><div class="label">Pendencias de aprovacao</div></div>
+            </div>
+            <div class="card">
+                <h2>Quadro de funcionarios</h2>
+                <p class="hint">O desligamento e um soft delete: o registro permanece no banco para relatorios trabalhistas.</p>
+                <div id="employees-table"></div>
+                <div id="quadro-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <section id="panel-admissao" class="panel">
+            <div class="card">
+                <h2>Admissao e liberacao de acesso</h2>
+                <p class="hint">O sistema cria a conta do funcionario, gera a senha e envia as credenciais por e-mail.</p>
+                <form id="admission-form">
+                    <div class="grid">
+                        <div><label for="adm-name">Nome completo</label><input id="adm-name" required></div>
+                        <div><label for="adm-cpf">CPF (somente numeros)</label><input id="adm-cpf" pattern="\d{11}" required></div>
+                        <div><label for="adm-email">E-mail</label><input id="adm-email" type="email" required></div>
+                        <div><label for="adm-position">Cargo</label><input id="adm-position" required></div>
+                        <div><label for="adm-department">Departamento</label><input id="adm-department" required></div>
+                        <div><label for="adm-salary">Salario</label><input id="adm-salary" type="number" step="0.01" min="0.01" required></div>
+                        <div><label for="adm-date">Data de admissao</label><input id="adm-date" type="date" required></div>
+                    </div>
+                    <div class="actions"><button type="submit" class="primary">Cadastrar funcionario</button></div>
+                </form>
+                <div id="admission-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <section id="panel-contrato" class="panel">
+            <div class="card">
+                <h2>Alteracao de cargo e salario</h2>
+                <p class="hint">Somente o RH altera cargo, salario e departamento. Cada alteracao gera historico contratual.</p>
+                <form id="contract-form">
+                    <div class="grid">
+                        <div><label for="ct-employee">Funcionario</label><select id="ct-employee" required></select></div>
+                        <div><label for="ct-position">Novo cargo</label><input id="ct-position" required></div>
+                        <div><label for="ct-salary">Novo salario</label><input id="ct-salary" type="number" step="0.01" min="0.01" required></div>
+                    </div>
+                    <div class="actions"><button type="submit" class="primary">Aplicar alteracao</button></div>
+                </form>
+                <div id="contract-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <section id="panel-ponto" class="panel">
+            <div class="card">
+                <h2>Conferencia do espelho de ponto</h2>
+                <p class="hint">Marcacoes chegam com status REGISTRADO e aguardam conferencia ou abono do RH.</p>
+                <div id="punches-table"></div>
+                <div id="punch-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <section id="panel-ferias" class="panel">
+            <div class="card">
+                <h2>Solicitacoes de ferias pendentes</h2>
+                <p class="hint">A decisao do RH notifica o funcionario no portal e debita o saldo quando aprovada.</p>
+                <div id="vacations-table"></div>
+                <div id="vacation-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <section id="panel-atestados" class="panel">
+            <div class="card">
+                <h2>Atestados e ausencias</h2>
+                <p class="hint">Ao aprovar, as marcacoes dos dias cobertos sao abonadas automaticamente.</p>
+                <div id="certificates-table"></div>
+                <div id="certificate-feedback" class="feedback"></div>
+            </div>
+        </section>
+
+        <section id="panel-holerites" class="panel">
+            <div class="card">
+                <h2>Emissao de holerite</h2>
+                <p class="hint">O holerite fica disponivel para consulta do funcionario no portal.</p>
+                <form id="payslip-form">
+                    <div class="grid">
+                        <div><label for="ps-employee">Funcionario</label><select id="ps-employee" required></select></div>
+                        <div><label for="ps-reference">Competencia</label><input id="ps-reference" type="month" required></div>
+                    </div>
+                    <div class="actions"><button type="submit" class="primary">Gerar holerite</button></div>
+                </form>
+                <div id="payslip-feedback" class="feedback"></div>
+                <div id="payslips-table" style="margin-top:18px"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/rh.js"></script>
+</body>
+</html>

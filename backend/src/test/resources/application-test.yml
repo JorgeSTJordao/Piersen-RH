@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:piersen;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+piersen:
+  jwt:
+    secret: piersen-hr-secret-key-para-testes-automatizados-2026
+    expiration-minutes: 60
+  seed:
+    enabled: true
