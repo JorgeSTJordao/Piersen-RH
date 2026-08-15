@@ -1,0 +1,26 @@
+Following description below, create a website containing all these features and stacks, also take a look a the website and PDF to understand the processo. This is a subject called DEVOPS, so look at that and take all process to create everything, but commit and push I do it
+
+# RULES
+
+- Projeto Web, porém dispensável o frontend
+- Deve ter uma API, no mínimo, permitindo requisições
+- Gravar os dados em um banco de dados de sua prferÊncia
+- Contém testes unitários
+
+# BUSINESS LOGIC
+
+Look at Piersen (name of script) file in PDF format
+
+# STACK
+
+- HTML
+- CSS
+- JS
+- Java para API
+- MySQL
+
+# WEBSITE PROCESS
+
+This link redirects to process to manage everything we need for the teacher
+
+https://devlabs.escdodev.com.br/labs/azure-boards-mytracker
