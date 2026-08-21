@@ -162,6 +162,38 @@ Relatório de cobertura: `backend/target/site/jacoco/index.html` (gerado por `mv
 > Os valores padrão servem para desenvolvimento local. Em qualquer ambiente
 > compartilhado, defina `PIERSEN_JWT_SECRET` e as credenciais do banco por variável de ambiente.
 
+## Repositórios remotos
+
+O repositório oficial da equipe, onde todos os integrantes têm acesso para clonar e enviar
+alterações, é o do **Azure DevOps**:
+
+```
+https://dev.azure.com/pucpr-estudantes/BCC_2026_2SEM_8A_EQ03/_git/DevOps
+```
+
+É nele que ficam o histórico compartilhado, o Boards e as Pipelines da disciplina — **use este
+remoto para dar push das suas alterações.**
+
+```bash
+git clone https://dev.azure.com/pucpr-estudantes/BCC_2026_2SEM_8A_EQ03/_git/DevOps
+```
+
+Existe também um espelho no GitHub (`https://github.com/JorgeSTJordao/Piersen-RH`), mantido na
+conta pessoal do autor. Por ser público, qualquer pessoa pode **clonar (`git clone`)** o código
+por ali também — mas ele é só para leitura e para rodar o GitHub Actions. Ele **não** aceita push
+de outros integrantes, então, para contribuir com alterações, use sempre o remoto do Azure
+DevOps.
+
+Quem já tem os dois remotos configurados localmente (como o autor) pode enviar para os dois:
+
+```bash
+git remote -v          # azure  -> Azure DevOps (fetch/push)
+                        # origin -> GitHub (fetch/push)
+
+git push azure main    # publica no repositório oficial da equipe
+git push origin main   # atualiza o espelho pessoal no GitHub
+```
+
 ## Documentação
 
 - [Regras de negócio](docs/regras-de-negocio.md)
